@@ -1,34 +1,57 @@
-import { fetchImages } from './js/pixabay-api.js';
-import { renderGallery, showError, showInfo, showLoadingSpinner, hideLoadingSpinner } from './js/render-functions.js';
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
-const form = document.getElementById('search-form');
-const galleryContainer = document.querySelector('.gallery');
-const loadingSpinner = document.getElementById('loading-spinner');
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
-  
-  const query = document.getElementById('query').value.trim();
-  if (!query) {
-    showError('Search query cannot be empty!');
-    return;
-  }
+// Инициализация SimpleLightbox
+const lightbox = new SimpleLightbox('.list-img a');
 
-  galleryContainer.innerHTML = '';
-  showLoadingSpinner(loadingSpinner);
+const formNew = document.querySelector(".formImg");
+const photoList = document.querySelector(".list-img");
+const loading = document.querySelector(".loader");
+const inputSearch = document.getElementById("search-img");
 
-  try {
-    const response = await fetchImages(query);
-    const images = response.hits;
+import { renderUsers } from './js/render-functions.js'; // Функция рендеринга
+import { fetchPhotos } from './js/pixabay-api.js'; // Запрос на API
 
-    if (images.length === 0) {
-      showInfo('Sorry, there are no images matching your search query.');
+formNew.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+    photoList.innerHTML = ""; // Очистка галереи перед новым поиском
+    loading.classList.remove("visually-hidden"); // Показываем спиннер
+
+    const query = inputSearch.value.trim();
+    if (query !== "") {
+        fetchPhotos(query)
+            .then((photos) => {
+                loading.classList.add("visually-hidden"); // Скрываем спиннер
+                if (photos.length > 0) {
+                    renderUsers(photos, photoList); // Рендерим фото
+                    lightbox.refresh(); // Обновляем SimpleLightbox
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Sorry, there are no images matching your search query. Please try again!',
+                        position: 'topRight'
+                    });
+                }
+            })
+            .catch((error) => {
+                loading.classList.add("visually-hidden");
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Error fetching images. Try again later.',
+                    position: 'topRight'
+                });
+                console.error(error);
+            });
     } else {
-      renderGallery(images, galleryContainer);
+        loading.classList.add("visually-hidden");
+        iziToast.error({
+            title: 'Error',
+            message: 'Please enter a search term!',
+            position: 'topRight'
+        });
     }
-  } catch (error) {
-    showError('Something went wrong. Please try again later.');
-  } finally {
-    hideLoadingSpinner(loadingSpinner);
-  }
 });

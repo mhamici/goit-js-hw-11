@@ -1,51 +1,19 @@
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
+export function renderUsers(photos, photoList) {
+    const markup = photos
+        .map((photo) => {
+            return `<li class="imgAdded">
+                <a href="${photo.largeImageURL}" class="gallery-item"> 
+                    <img src="${photo.webformatURL}" alt="${photo.tags}" width="360" height="152">
+                </a>
+                <div class="descr">
+                    <p><b>Likes</b> ${photo.likes}</p>
+                    <p><b>Views</b> ${photo.views}</p>
+                    <p><b>Comments</b> ${photo.comments}</p>
+                    <p><b>Downloads</b> ${photo.downloads}</p>
+                </div>
+            </li>`;
+        })
+        .join("");
 
-export function renderGallery(images, galleryContainer) {
-  const markup = images
-    .map(
-      ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `
-        <a href="${largeImageURL}" class="gallery-item">
-          <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-          <div class="info">
-            <p><b>Likes</b>: ${likes}</p>
-            <p><b>Views</b>: ${views}</p>
-            <p><b>Comments</b>: ${comments}</p>
-            <p><b>Downloads</b>: ${downloads}</p>
-          </div>
-        </a>`
-    )
-    .join('');
-
-  galleryContainer.innerHTML = markup;
-  refreshLightbox();
-}
-
-function refreshLightbox() {
-  const lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250 });
-  lightbox.refresh();
-}
-
-export function showError(message) {
-  iziToast.error({
-    title: 'Error',
-    message: message,
-  });
-}
-
-export function showInfo(message) {
-  iziToast.info({
-    title: 'Info',
-    message: message,
-  });
-}
-
-export function showLoadingSpinner(loadingSpinner) {
-  loadingSpinner.classList.remove('hidden');
-}
-
-export function hideLoadingSpinner(loadingSpinner) {
-  loadingSpinner.classList.add('hidden');
+    photoList.insertAdjacentHTML("beforeend", markup);
 }

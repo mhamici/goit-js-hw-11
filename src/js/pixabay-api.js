@@ -1,14 +1,25 @@
-const API_KEY = '46086824-2983fdd94aba44351510a0e76'; // Встав свій ключ
-const BASE_URL = 'https://pixabay.com/api/';
+export function fetchPhotos(query) {
+  const searchParams = new URLSearchParams({
+    key: "45999766-9f9a6b82db6e56573d0cf5f49",  // Ваш API-ключ
+    q: query,
+    image_type: "photo",
+    orientation: "horizontal",
+    safesearch: true,
+  });
 
-export async function fetchImages(query, page = 1, perPage = 12) {
-  const url = `${BASE_URL}?key=${API_KEY}&q=${encodeURIComponent(query)}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`;
+  const url = `https://pixabay.com/api/?${searchParams.toString()}`;
 
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error('Error fetching images from Pixabay');
-  }
-
-  return await response.json();
+  return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data.hits;
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+    });
 }
