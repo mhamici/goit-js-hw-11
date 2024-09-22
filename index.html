@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Image Search</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.10.3/simple-lightbox.min.css">
-  <script type="module" crossorigin src="/goit-js-hw-11/index.js"></script>
-  <link rel="modulepreload" crossorigin href="/goit-js-hw-11/assets/vendor-BrddEoy-.js">
-  <link rel="stylesheet" crossorigin href="/goit-js-hw-11/assets/vendor-CWKLx11g.css">
-  <link rel="stylesheet" crossorigin href="/goit-js-hw-11/assets/index-BCtdbu_-.css">
-</head>
-<body>
-  <div class="container">
-    <form id="search-form">
-      <input type="text" id="query" name="query" placeholder="Search for images..." required />
-      <button type="submit">Search</button>
-    </form>
-    <div class="gallery"></div>
-    <div id="loading-spinner" class="hidden">Loading...</div>
-  </div>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homework 11</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    />
+    <script type="module" crossorigin src="/goit-js-hw-11/index.js"></script>
+    <link rel="modulepreload" crossorigin href="/goit-js-hw-11/assets/vendor-5ObWk2rO.js">
+    <link rel="stylesheet" crossorigin href="/goit-js-hw-11/assets/vendor-DumFYO8Z.css">
+    <link rel="stylesheet" crossorigin href="/goit-js-hw-11/assets/index-BU6FOScx.css">
+  </head>
+  <body>
+    <main>
+      <!-- Loads the specified .html file -->
+      <form class="formImg">
+        <input type="text" id="search-img" placeholder="Search images..." />
+        <button type="submit" class="buttonSearch" data-search>Search</button>
+      </form>
+      <div class="loader visually-hidden"></div>
+      <ul class="list-img"></ul>
+    </main>
+  </body>
 </html>
